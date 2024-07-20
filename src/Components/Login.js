@@ -1,10 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Header from "./Header";
+import ValidationCheck from "../utils/Validate";
 
 export const Login = () => {
-  const [signup, setSignUP] = useState("Sign In");
+  //const name = useRef(null);
+  const email = useRef(null);
+  const password = useRef(null);
+  const [isSignIn, setSignInForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const handleButtonClick = () => {
+    const message = ValidationCheck(
+      email.current.value,
+      password.current.value
+    );
+    setErrorMessage(message);
+  };
   const handleClick = () => {
-    setSignUP("Sign Up");
+    setSignInForm(!isSignIn);
   };
   return (
     <div>
@@ -16,9 +28,14 @@ export const Login = () => {
           alt=" "
         />
       </div>
-      <form className="absolute p-12 bg-black/70 w-3/12 mx-auto my-40 right-0 left-0  ">
-        <h5 className="font-bold  text-white text-3XL w-full">{signup}</h5>
-        {signup !== "Sign In" && (
+      <form
+        onSubmit={(e) => e.preventDefault()}
+        className="absolute p-12 bg-black/70 w-3/12 mx-auto my-40 right-0 left-0  "
+      >
+        <h5 className="font-bold  text-white text-3XL w-full">
+          {isSignIn ? "Sign In" : "Sign Up"}
+        </h5>
+        {!isSignIn && (
           <input
             className="p-4 my-4 w-full bg-gray-700 rounded-lg"
             type="text"
@@ -26,20 +43,30 @@ export const Login = () => {
           />
         )}
         <input
+          ref={email}
           className="p-4 my-4 w-full bg-gray-700 rounded-lg"
           type="text"
           placeholder="Email or phone number"
         />
-        <input
-          className="p-4 my-4 w-full bg-gray-700 rounded-lg"
-          type="password"
-          placeholder="Password"
-        />
-        <button className="p-4 my-6 bg-red-600 text-white w-full rounded-lg">
-          {signup}
+        {
+          <input
+            ref={password}
+            className="p-4 my-4 w-full bg-gray-700 rounded-lg"
+            type="password"
+            placeholder="Password"
+          />
+        }
+        <p className="text-red-500 font-bold p-2">{errorMessage}</p>
+        <button
+          className="p-4 my-6 bg-red-600 text-white w-full rounded-lg"
+          onClick={handleButtonClick}
+        >
+          {isSignIn ? "Sign In" : "Sign Up"}
         </button>
-        <p className="text-gray-400 cursor-pointer" onClick={handleClick}>
-          New to Netflix ?<span className="text-white">Sign up now.</span>
+        <p className=" text-white cursor-pointer" onClick={handleClick}>
+          {isSignIn
+            ? "New to Netflix ?Sign up now"
+            : "Alredy registered?Sign In Now."}
         </p>
       </form>
     </div>
