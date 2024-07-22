@@ -13,8 +13,6 @@ const ValidationCheck = (email, password) => {
   if (!isPasswordValid) {
     return "Password is not valid";
   }
-
-  // Return messages if any, otherwise return a success message
   return null;
 };
 export default ValidationCheck;

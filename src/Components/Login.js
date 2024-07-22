@@ -1,6 +1,12 @@
 import React, { useState, useRef } from "react";
 import Header from "./Header";
 import ValidationCheck from "../utils/Validate";
+import { auth } from "../utils/firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
   //const name = useRef(null);
@@ -8,15 +14,63 @@ export const Login = () => {
   const password = useRef(null);
   const [isSignIn, setSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
+
+  //navigate
+  const navigate = useNavigate();
+
   const handleButtonClick = () => {
+    console.log("click");
     const message = ValidationCheck(
       email.current.value,
       password.current.value
     );
     setErrorMessage(message);
+
+    if (!isSignIn) {
+      console.log("if");
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+          navigate("/browser");
+
+          setErrorMessage("");
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ..
+          setErrorMessage(errorCode + "" + errorMessage);
+        });
+    } else {
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          setErrorMessage("");
+          // Signed in
+          const user = userCredential.user;
+          navigate("/browser");
+
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "" + errorMessage);
+        });
+    }
   };
   const handleClick = () => {
     setSignInForm(!isSignIn);
+    setErrorMessage("");
   };
   return (
     <div>
