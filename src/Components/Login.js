@@ -6,7 +6,6 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
   //const name = useRef(null);
@@ -15,11 +14,7 @@ export const Login = () => {
   const [isSignIn, setSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  //navigate
-  const navigate = useNavigate();
-
   const handleButtonClick = () => {
-    console.log("click");
     const message = ValidationCheck(
       email.current.value,
       password.current.value
@@ -27,7 +22,6 @@ export const Login = () => {
     setErrorMessage(message);
 
     if (!isSignIn) {
-      console.log("if");
       createUserWithEmailAndPassword(
         auth,
         email.current.value,
@@ -36,7 +30,6 @@ export const Login = () => {
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
-          navigate("/browser");
 
           setErrorMessage("");
           // ...
@@ -57,7 +50,6 @@ export const Login = () => {
           setErrorMessage("");
           // Signed in
           const user = userCredential.user;
-          navigate("/browser");
 
           // ...
         })
