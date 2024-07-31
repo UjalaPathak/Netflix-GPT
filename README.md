@@ -20,10 +20,12 @@ if not
 
 login/signup
 -sign in/ Sign up
--redirect to browse Page
 -Form Validation (useRef,rgex)
 -firebase auth
+-redirect to browse Page
 -redux(appstore,slice)
+-custom hook
+-fetch api
 
 -
 
@@ -55,7 +57,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase'; // Adjust the import path based on your project structure
 
 const handleAuthStateChanged = (user) => {
-console.log("user", user);
+//console.log("user", user);
 if (user) {
 // User is signed in
 const uid = user.uid;

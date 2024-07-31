@@ -1,23 +1,28 @@
-import React, { useEffect } from "react";
-import { API_OPTIONS } from "../utils/constant";
-import { useDispatch } from "react-redux";
-import { addNowPlayingMovieVideo } from "../utils/movieSlice";
+import React from "react";
+import { useSelector } from "react-redux";
+import useNowPlayingAPIVideo from "../hooks/useNowPlayingAPIVideo";
 
 function MovieVideo({ movieId }) {
-  const dispatch = useDispatch();
-  const getNoWPlayingVideo = async () => {
-    const data = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US`,
-      API_OPTIONS
-    );
-    const json = await data.json();
-    dispatch(addNowPlayingMovieVideo(json.results));
-  };
+  useNowPlayingAPIVideo(movieId);
+  const movie = useSelector((store) => store.movie?.nowPlayingMovieVideo);
+  if (!movie) return;
+  const filterData = movie.filter((video) => video.type === "Trailer");
+  const trailer = filterData.length ? filterData[0] : movie[0];
 
-  useEffect(() => {
-    getNoWPlayingVideo();
-  }, [movieId]);
-  return <div>MovieVideo</div>;
+  return (
+    <div className="w-screen">
+      <iframe
+        className="w-screen aspect-video"
+        src={
+          "https://www.youtube.com/embed/" + trailer.key + "?&autoplay=1&mute=1"
+        }
+        title="YouTube video player"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+      ></iframe>
+    </div>
+  );
 }
 
 export default MovieVideo;

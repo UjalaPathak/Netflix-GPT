@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 function MainComponent() {
   const movieResponse = useSelector((store) => store.movie.nowPlayingMovie);
   if (!movieResponse) return;
-  console.log("movieResponse", movieResponse[0]);
 
   const { original_title, overview } = movieResponse[0];
   return (
