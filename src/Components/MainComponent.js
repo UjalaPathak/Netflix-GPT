@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import MovieTitle from "./MovieTitle";
 import MovieVideo from "./MovieVideo";
-import { API_OPTIONS } from "../utils/constant";
 import { useSelector } from "react-redux";
+import SecondComponent from "./SecondComponent";
 
 function MainComponent() {
   const movieResponse = useSelector((store) => store.movie.nowPlayingMovie);
